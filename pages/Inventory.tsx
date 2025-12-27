@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { db } from '../db';
 import { Product, ProductType, User } from '../types';
@@ -181,46 +180,51 @@ const Inventory = () => {
         </div>
       </div>
 
-      {/* PRODUCT MODAL - ENHANCED LIGHT MODE UI */}
+      {/* PRODUCT MODAL - REFINED TO MATCH SCREENSHOT */}
       {showModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-brand-navy/60 backdrop-blur-md transition-opacity duration-300">
-          <div className="bg-white w-full max-w-lg rounded-[2.5rem] shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)] overflow-hidden animate-in fade-in zoom-in-95 duration-200">
-            <div className="p-8 border-b border-slate-100 bg-white relative">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-brand-navy/60 backdrop-blur-md transition-all duration-300">
+          <div className="bg-white w-full max-w-xl rounded-[2.5rem] shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)] overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+            {/* Modal Header */}
+            <div className="p-8 pb-4 relative">
               <div className="flex justify-between items-start">
                 <div>
-                  <h3 className="text-2xl font-black text-slate-900 tracking-tight">{editingProduct?.id ? 'Edit Product' : 'Add New Product'}</h3>
+                  <h3 className="text-2xl font-black text-slate-900 tracking-tight">
+                    {editingProduct?.id ? 'Edit Product' : 'Add New Product'}
+                  </h3>
                   <p className="text-sm text-slate-500 font-medium mt-1">Fill in the product details below</p>
                 </div>
                 <button 
                   onClick={() => setShowModal(false)}
-                  className="p-2.5 bg-slate-50 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-2xl transition-all"
+                  className="p-2 bg-slate-50 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-full transition-all"
                 >
                   <X size={20} />
                 </button>
               </div>
             </div>
             
-            <form onSubmit={handleSave} className="p-8 pt-6 space-y-6">
+            <form onSubmit={handleSave} className="p-8 pt-4 space-y-6">
               <div className="grid grid-cols-2 gap-x-6 gap-y-5">
+                {/* Product Name - Full Width */}
                 <div className="col-span-2">
                   <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 ml-1">Product Name</label>
                   <input 
                     required 
                     type="text" 
                     placeholder="Enter product title..."
-                    className="w-full px-5 py-3.5 bg-white border border-slate-200 rounded-2xl text-slate-900 font-semibold placeholder:text-slate-300 focus:ring-4 focus:ring-brand-primary/10 focus:border-brand-primary outline-none transition-all"
+                    className="w-full px-5 py-4 bg-white border border-slate-200 rounded-2xl text-slate-900 font-semibold placeholder:text-slate-300 focus:ring-4 focus:ring-brand-primary/10 focus:border-brand-primary outline-none transition-all"
                     value={editingProduct?.name || ''}
                     onChange={e => setEditingProduct({...editingProduct!, name: e.target.value})}
                   />
                 </div>
                 
+                {/* SKU & Category */}
                 <div>
                   <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 ml-1">SKU / Barcode</label>
                   <input 
                     required 
                     type="text" 
                     placeholder="e.g. SN-IP13"
-                    className="w-full px-5 py-3.5 bg-white border border-slate-200 rounded-2xl text-slate-900 font-mono text-xs focus:ring-4 focus:ring-brand-primary/10 focus:border-brand-primary outline-none transition-all"
+                    className="w-full px-5 py-4 bg-white border border-slate-200 rounded-2xl text-slate-900 font-mono text-sm focus:ring-4 focus:ring-brand-primary/10 focus:border-brand-primary outline-none transition-all"
                     value={editingProduct?.sku || ''}
                     onChange={e => setEditingProduct({...editingProduct!, sku: e.target.value})}
                   />
@@ -228,28 +232,30 @@ const Inventory = () => {
                 
                 <div>
                   <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 ml-1">Category Type</label>
-                  <select 
-                    className="w-full px-5 py-3.5 bg-white border border-slate-200 rounded-2xl text-slate-900 font-semibold focus:ring-4 focus:ring-brand-primary/10 focus:border-brand-primary outline-none appearance-none cursor-pointer"
-                    value={editingProduct?.type || 'Phone'}
-                    onChange={e => setEditingProduct({...editingProduct!, type: e.target.value as ProductType})}
-                  >
-                    <option value="Phone">Phone</option>
-                    <option value="Accessory">Accessory</option>
-                    <option value="Spare Part">Spare Part</option>
-                  </select>
+                  <div className="relative">
+                    <select 
+                      className="w-full px-5 py-4 bg-white border border-slate-200 rounded-2xl text-slate-900 font-semibold focus:ring-4 focus:ring-brand-primary/10 focus:border-brand-primary outline-none appearance-none cursor-pointer"
+                      value={editingProduct?.type || 'Phone'}
+                      onChange={e => setEditingProduct({...editingProduct!, type: e.target.value as ProductType})}
+                    >
+                      <option value="Phone">Phone</option>
+                      <option value="Accessory">Accessory</option>
+                      <option value="Spare Part">Spare Part</option>
+                    </select>
+                  </div>
                 </div>
                 
+                {/* Pricing */}
                 <div>
                   <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 ml-1">Cost Price (UGX)</label>
-                  <div className="relative">
-                    <input 
-                      required 
-                      type="number" 
-                      className="w-full px-5 py-3.5 bg-white border border-slate-200 rounded-2xl text-slate-900 font-bold focus:ring-4 focus:ring-brand-primary/10 focus:border-brand-primary outline-none transition-all"
-                      value={editingProduct?.costPrice || ''}
-                      onChange={e => setEditingProduct({...editingProduct!, costPrice: parseInt(e.target.value)})}
-                    />
-                  </div>
+                  <input 
+                    required 
+                    type="number" 
+                    placeholder="0"
+                    className="w-full px-5 py-4 bg-white border border-slate-200 rounded-2xl text-slate-900 font-bold focus:ring-4 focus:ring-brand-primary/10 focus:border-brand-primary outline-none transition-all"
+                    value={editingProduct?.costPrice ?? ''}
+                    onChange={e => setEditingProduct({...editingProduct!, costPrice: parseInt(e.target.value) || 0})}
+                  />
                 </div>
                 
                 <div>
@@ -257,20 +263,23 @@ const Inventory = () => {
                   <input 
                     required 
                     type="number" 
-                    className="w-full px-5 py-3.5 bg-white border border-slate-200 rounded-2xl text-slate-900 font-bold text-emerald-600 focus:ring-4 focus:ring-brand-primary/10 focus:border-brand-primary outline-none transition-all"
-                    value={editingProduct?.sellingPrice || ''}
-                    onChange={e => setEditingProduct({...editingProduct!, sellingPrice: parseInt(e.target.value)})}
+                    placeholder="0"
+                    className="w-full px-5 py-4 bg-white border border-slate-200 rounded-2xl text-slate-900 font-bold text-emerald-600 focus:ring-4 focus:ring-brand-primary/10 focus:border-brand-primary outline-none transition-all"
+                    value={editingProduct?.sellingPrice ?? ''}
+                    onChange={e => setEditingProduct({...editingProduct!, sellingPrice: parseInt(e.target.value) || 0})}
                   />
                 </div>
                 
+                {/* Stock Details */}
                 <div>
                   <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 ml-1">Stock Quantity</label>
                   <input 
                     required 
                     type="number" 
-                    className="w-full px-5 py-3.5 bg-white border border-slate-200 rounded-2xl text-slate-900 font-bold focus:ring-4 focus:ring-brand-primary/10 focus:border-brand-primary outline-none transition-all"
+                    placeholder="0"
+                    className="w-full px-5 py-4 bg-white border border-slate-200 rounded-2xl text-slate-900 font-bold focus:ring-4 focus:ring-brand-primary/10 focus:border-brand-primary outline-none transition-all"
                     value={editingProduct?.quantity ?? ''}
-                    onChange={e => setEditingProduct({...editingProduct!, quantity: parseInt(e.target.value)})}
+                    onChange={e => setEditingProduct({...editingProduct!, quantity: parseInt(e.target.value) || 0})}
                   />
                 </div>
                 
@@ -279,13 +288,15 @@ const Inventory = () => {
                   <input 
                     required 
                     type="number" 
-                    className="w-full px-5 py-3.5 bg-white border border-slate-200 rounded-2xl text-slate-900 font-bold text-amber-600 focus:ring-4 focus:ring-brand-primary/10 focus:border-brand-primary outline-none transition-all"
+                    placeholder="5"
+                    className="w-full px-5 py-4 bg-white border border-slate-200 rounded-2xl text-slate-900 font-bold text-amber-600 focus:ring-4 focus:ring-brand-primary/10 focus:border-brand-primary outline-none transition-all"
                     value={editingProduct?.reorderLevel ?? ''}
-                    onChange={e => setEditingProduct({...editingProduct!, reorderLevel: parseInt(e.target.value)})}
+                    onChange={e => setEditingProduct({...editingProduct!, reorderLevel: parseInt(e.target.value) || 0})}
                   />
                 </div>
               </div>
               
+              {/* Form Actions */}
               <div className="flex gap-4 pt-6">
                 <button 
                   type="button"
