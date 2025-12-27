@@ -28,6 +28,7 @@ import Suppliers from './pages/Suppliers';
 import Reports from './pages/Reports';
 import Users from './pages/Users';
 import Settings from './pages/Settings';
+import Login from './pages/Login';
 import { db } from './db';
 import { User } from './types';
 
@@ -52,20 +53,9 @@ const AppContent = () => {
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const [syncStatus, setSyncStatus] = useState<'SYNCED' | 'SYNCING' | 'FAILED' | 'OFFLINE'>('SYNCED');
 
-  useEffect(() => {
-    if (!user) {
-      const checkAndSetUser = async () => {
-        const users = await db.users.getAll();
-        const defaultUser = users.find(u => u.role === 'Admin') || { id: 'u-admin', username: 'admin', name: 'SNA! Administrator', role: 'Admin' };
-        db.auth.setCurrentUser(defaultUser);
-        setUser(defaultUser);
-      };
-      checkAndSetUser();
-    }
-  }, [user]);
-
   // Background Sync Effect
   useEffect(() => {
+    if (!user) return;
     const syncInterval = setInterval(async () => {
       if (syncStatus === 'SYNCING') return;
       setSyncStatus('SYNCING');
@@ -74,13 +64,16 @@ const AppContent = () => {
     }, 15000); // Attempt sync every 15 seconds
 
     return () => clearInterval(syncInterval);
-  }, [syncStatus]);
+  }, [syncStatus, user]);
 
   const handleLogout = () => {
     db.auth.setCurrentUser(null);
     setUser(null);
-    window.location.reload();
   };
+
+  if (!user) {
+    return <Login onLoginSuccess={setUser} />;
+  }
 
   return (
     <div className="flex h-screen w-full overflow-hidden text-slate-800">
@@ -131,7 +124,6 @@ const AppContent = () => {
             </div>
 
             <div className="flex items-center gap-3">
-              {/* SYNC INDICATOR */}
               <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-50 border border-slate-100">
                 {syncStatus === 'SYNCING' && <RefreshCw size={14} className="text-blue-500 animate-spin" />}
                 {syncStatus === 'SYNCED' && <Cloud size={14} className="text-emerald-500" />}
@@ -182,7 +174,7 @@ const AppContent = () => {
                         onClick={handleLogout}
                         className="w-full flex items-center gap-3 px-4 py-2 text-sm text-red-500 hover:bg-red-50 transition-colors mt-1"
                       >
-                        <LogOut size={16} /> Reset Session
+                        <LogOut size={16} /> Logout
                       </button>
                     </div>
                   </>

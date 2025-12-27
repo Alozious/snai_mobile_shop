@@ -234,18 +234,18 @@ const POS = () => {
         </div>
       </div>
 
-      {/* CART & CHECKOUT - REFINED DARK MODE DESIGN */}
-      <div className="w-full lg:w-96 bg-brand-navy rounded-[2.5rem] shadow-2xl flex flex-col overflow-hidden border border-white/5 relative group/cart">
+      {/* CART & CHECKOUT - REFINED LIGHT MODE DESIGN */}
+      <div className="w-full lg:w-96 bg-white rounded-[2.5rem] shadow-xl flex flex-col overflow-hidden border border-slate-200/60 relative group/cart">
         {/* Cart Header */}
-        <div className="p-6 border-b border-white/5 flex items-center gap-4 bg-white/[0.02]">
+        <div className="p-6 border-b border-slate-100 flex items-center gap-4 bg-slate-50/50">
           <div className="w-12 h-12 bg-brand-primary rounded-2xl text-black flex items-center justify-center shadow-lg shadow-brand-primary/20">
             <ShoppingBag size={22} />
           </div>
           <div>
-            <h3 className="text-white font-black text-base tracking-tight leading-none">Active Cart</h3>
-            <p className="text-brand-textMuted text-[10px] font-bold uppercase tracking-widest mt-2 opacity-60">Cashier: {user?.name || 'STAFF'}</p>
+            <h3 className="text-slate-900 font-black text-base tracking-tight leading-none">Active Cart</h3>
+            <p className="text-slate-500 text-[10px] font-bold uppercase tracking-widest mt-2">Cashier: {user?.name || 'STAFF'}</p>
           </div>
-          <div className="ml-auto bg-white/10 text-white text-[10px] font-black px-2.5 py-1 rounded-full border border-white/10 uppercase">
+          <div className="ml-auto bg-slate-100 text-slate-600 text-[10px] font-black px-2.5 py-1 rounded-full border border-slate-200 uppercase">
             {cart.length} Items
           </div>
         </div>
@@ -254,45 +254,45 @@ const POS = () => {
         <div className="flex-1 overflow-auto p-6 space-y-3 scrollbar-hide">
           {cart.length === 0 ? (
             <div className="h-full flex flex-col items-center justify-center text-center opacity-20">
-              <ShoppingBag size={64} className="text-white mb-4 stroke-1" />
-              <p className="text-white text-xs font-black uppercase tracking-[0.2em]">Cart is Empty</p>
-              <p className="text-white text-[10px] mt-2 max-w-[140px]">Select items from inventory to begin sale</p>
+              <ShoppingBag size={64} className="text-slate-400 mb-4 stroke-1" />
+              <p className="text-slate-900 text-xs font-black uppercase tracking-[0.2em]">Cart is Empty</p>
+              <p className="text-slate-500 text-[10px] mt-2 max-w-[140px]">Select items from inventory to begin sale</p>
             </div>
           ) : (
             cart.map(item => (
-              <div key={item.productId} className="group/item flex flex-col gap-3 bg-white/[0.03] p-4 rounded-[1.5rem] border border-white/5 hover:bg-white/[0.05] transition-all">
+              <div key={item.productId} className="group/item flex flex-col gap-3 bg-slate-50 p-4 rounded-[1.5rem] border border-slate-200/60 hover:bg-slate-100 transition-all">
                 <div className="flex justify-between items-start gap-4">
                   <div className="flex-1 min-w-0">
-                    <div className="text-white text-xs font-black leading-tight truncate uppercase tracking-tight">{item.name}</div>
-                    <div className="text-[10px] text-brand-textMuted font-bold mt-1.5 opacity-60 uppercase tracking-widest">
+                    <div className="text-slate-800 text-xs font-black leading-tight truncate uppercase tracking-tight">{item.name}</div>
+                    <div className="text-[10px] text-slate-400 font-bold mt-1.5 uppercase tracking-widest">
                       UGX {(item.price ?? 0).toLocaleString()} / UNIT
                     </div>
                   </div>
                   <button 
                     onClick={() => removeFromCart(item.productId)}
-                    className="p-1.5 text-red-400/30 hover:text-red-400 hover:bg-red-500/10 rounded-xl transition-all"
+                    className="p-1.5 text-red-400 hover:text-red-600 hover:bg-red-50 rounded-xl transition-all"
                   >
                     <Trash2 size={16} />
                   </button>
                 </div>
                 
-                <div className="flex items-center justify-between border-t border-white/5 pt-3 mt-1">
-                   <div className="flex items-center bg-black/40 rounded-xl p-1 border border-white/5">
+                <div className="flex items-center justify-between border-t border-slate-200 pt-3 mt-1">
+                   <div className="flex items-center bg-slate-200/50 rounded-xl p-1 border border-slate-200">
                       <button 
                         onClick={() => updateQuantity(item.productId, -1)}
-                        className="p-1.5 text-white/40 hover:text-brand-primary transition-colors"
+                        className="p-1.5 text-slate-400 hover:text-brand-primaryDark transition-colors"
                       >
                         <Minus size={14} strokeWidth={3} />
                       </button>
-                      <span className="w-8 text-center text-xs font-black text-white">{item.quantity}</span>
+                      <span className="w-8 text-center text-xs font-black text-slate-700">{item.quantity}</span>
                       <button 
                          onClick={() => updateQuantity(item.productId, 1)}
-                         className="p-1.5 text-white/40 hover:text-brand-primary transition-colors"
+                         className="p-1.5 text-slate-400 hover:text-brand-primaryDark transition-colors"
                       >
                         <Plus size={14} strokeWidth={3} />
                       </button>
                    </div>
-                   <div className="text-sm font-black text-brand-primary">
+                   <div className="text-sm font-black text-slate-900">
                     UGX {((item.price ?? 0) * (item.quantity ?? 0)).toLocaleString()}
                    </div>
                 </div>
@@ -302,21 +302,21 @@ const POS = () => {
         </div>
 
         {/* Totals & Actions */}
-        <div className="p-6 bg-white/[0.04] border-t border-white/10 space-y-6">
+        <div className="p-6 bg-slate-50/80 border-t border-slate-200 space-y-6">
           <div className="space-y-3">
-            <div className="flex justify-between text-brand-textMuted text-[10px] font-black uppercase tracking-widest opacity-60">
+            <div className="flex justify-between text-slate-500 text-[10px] font-black uppercase tracking-widest">
               <span>Subtotal</span>
-              <span className="text-white/80">UGX {(subtotal ?? 0).toLocaleString()}</span>
+              <span className="text-slate-800">UGX {(subtotal ?? 0).toLocaleString()}</span>
             </div>
             {settings.taxEnabled && (
-               <div className="flex justify-between text-brand-textMuted text-[10px] font-black uppercase tracking-widest opacity-60">
+               <div className="flex justify-between text-slate-500 text-[10px] font-black uppercase tracking-widest">
                 <span>Value Added Tax ({settings.taxRate}%)</span>
-                <span className="text-white/80">UGX {(taxAmount ?? 0).toLocaleString()}</span>
+                <span className="text-slate-800">UGX {(taxAmount ?? 0).toLocaleString()}</span>
               </div>
             )}
-            <div className="flex justify-between text-white pt-4 border-t border-white/5">
+            <div className="flex justify-between text-slate-900 pt-4 border-t border-slate-200">
               <span className="text-xs font-black uppercase tracking-widest opacity-80">Total Due</span>
-              <span className="text-2xl font-black text-brand-primary tracking-tighter">UGX {(grandTotal ?? 0).toLocaleString()}</span>
+              <span className="text-2xl font-black text-brand-primaryDark tracking-tighter">UGX {(grandTotal ?? 0).toLocaleString()}</span>
             </div>
           </div>
 
@@ -325,7 +325,7 @@ const POS = () => {
               <button 
                 key={m}
                 onClick={() => setPaymentMethod(m)}
-                className={`px-3 py-3 rounded-2xl text-[9px] font-black uppercase tracking-widest transition-all border ${paymentMethod === m ? 'bg-brand-primary text-black border-brand-primary shadow-lg shadow-brand-primary/20' : 'bg-white/5 text-brand-sidebarText border-white/5 hover:bg-white/10'}`}
+                className={`px-3 py-3 rounded-2xl text-[9px] font-black uppercase tracking-widest transition-all border ${paymentMethod === m ? 'bg-brand-primary text-black border-brand-primary shadow-lg shadow-brand-primary/20' : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-50'}`}
               >
                 {m}
               </button>
@@ -335,7 +335,7 @@ const POS = () => {
           <button 
             onClick={checkout}
             disabled={cart.length === 0}
-            className={`w-full py-5 rounded-[1.5rem] font-black text-xs uppercase tracking-[0.3em] shadow-2xl transition-all group relative overflow-hidden ${cart.length > 0 ? 'bg-brand-primary text-black hover:scale-[1.02] shadow-brand-primary/30 active:scale-95' : 'bg-white/5 text-white/20 cursor-not-allowed border border-white/5'}`}
+            className={`w-full py-5 rounded-[1.5rem] font-black text-xs uppercase tracking-[0.3em] shadow-2xl transition-all group relative overflow-hidden ${cart.length > 0 ? 'bg-brand-primary text-black hover:scale-[1.02] shadow-brand-primary/30 active:scale-95' : 'bg-slate-200 text-slate-400 cursor-not-allowed border border-slate-300'}`}
           >
             <div className="relative z-10 flex items-center justify-center gap-3">
               COMPLETE TRANSACTION
