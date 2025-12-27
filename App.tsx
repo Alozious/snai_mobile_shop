@@ -1,5 +1,4 @@
-
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { HashRouter, Routes, Route, Link, useLocation, Navigate } from 'react-router-dom';
 import { 
   LayoutDashboard, 
@@ -12,7 +11,6 @@ import {
   Settings as SettingsIcon, 
   LogOut, 
   Search, 
-  Plus,
   Bell,
   User as UserIcon,
   ChevronDown,
@@ -53,18 +51,30 @@ const AppContent = () => {
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const [syncStatus, setSyncStatus] = useState<'SYNCED' | 'SYNCING' | 'FAILED' | 'OFFLINE'>('SYNCED');
 
-  // Background Sync Effect
-  useEffect(() => {
-    if (!user) return;
-    const syncInterval = setInterval(async () => {
-      if (syncStatus === 'SYNCING') return;
-      setSyncStatus('SYNCING');
+  const performSync = useCallback(async () => {
+    // Only attempt sync if tab is active and visible
+    if (document.hidden) return;
+    
+    setSyncStatus('SYNCING');
+    try {
       const result = await db.sync.performSync();
       setSyncStatus(result as any);
-    }, 15000); // Attempt sync every 15 seconds
+    } catch (err) {
+      setSyncStatus('FAILED');
+    }
+  }, []);
 
+  useEffect(() => {
+    if (!user) return;
+
+    // Initial sync
+    performSync();
+
+    const syncInterval = setInterval(performSync, 30000); // More conservative 30s interval for production stability
+
+    // Cleanup
     return () => clearInterval(syncInterval);
-  }, [syncStatus, user]);
+  }, [user, performSync]);
 
   const handleLogout = () => {
     db.auth.setCurrentUser(null);
@@ -89,7 +99,7 @@ const AppContent = () => {
           </div>
         </div>
 
-        <nav className="flex flex-col gap-1 flex-1">
+        <nav className="flex flex-col gap-1 flex-1 overflow-y-auto scrollbar-hide">
           <SidebarItem to="/" icon={LayoutDashboard} label="Dashboard" active={location.pathname === '/'} />
           <SidebarItem to="/inventory" icon={Package} label="Inventory" active={location.pathname === '/inventory'} />
           <SidebarItem to="/pos" icon={ShoppingCart} label="Sales (POS)" active={location.pathname === '/pos'} />
@@ -100,8 +110,8 @@ const AppContent = () => {
           <SidebarItem to="/settings" icon={SettingsIcon} label="Settings" active={location.pathname === '/settings'} />
         </nav>
 
-        <div className="mt-auto px-2 py-4">
-           <div className="text-[10px] text-brand-textMuted uppercase font-black tracking-widest opacity-50">
+        <div className="mt-auto pt-4 border-t border-white/5">
+           <div className="text-[10px] text-brand-textMuted uppercase font-black tracking-widest opacity-50 px-2">
              &copy; 2024 SNA! Mobile Systems
            </div>
         </div>

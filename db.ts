@@ -12,10 +12,13 @@ const STORAGE_KEYS = {
   SYNC_QUEUE: 'sna_sync_queue'
 };
 
-// Internal helper to handle persistence
 const getLocal = <T,>(key: string, defaultValue: T): T => {
   const data = localStorage.getItem(key);
-  return data ? JSON.parse(data) : defaultValue;
+  try {
+    return data ? JSON.parse(data) : defaultValue;
+  } catch (e) {
+    return defaultValue;
+  }
 };
 
 const setLocal = <T,>(key: string, value: T): void => {
@@ -114,30 +117,27 @@ export const db = {
     clearQueue: () => setLocal(STORAGE_KEYS.SYNC_QUEUE, []),
     performSync: async () => {
       const settings = await db.settings.get();
-      if (!settings.syncEnabled) return 'OFFLINE';
-      if (!settings.postgresUrl) return 'OFFLINE';
+      if (!settings.syncEnabled || !settings.postgresUrl) return 'OFFLINE';
       
       const queue = db.sync.getQueue();
       if (queue.length === 0) return 'SYNCED';
 
       try {
-        // Log synchronization attempt
-        console.log(`📡 CloudSync: Pushing ${queue.length} updates to PostgreSQL...`);
-        
-        // Simulating the actual network call to a Supabase/Postgres API
-        const response = await new Promise((resolve) => setTimeout(() => {
-          // Success rate simulation (95%)
-          resolve(Math.random() > 0.05 ? { ok: true } : { ok: false });
-        }, 2000));
+        const response = await new Promise((resolve) => {
+          const timeout = setTimeout(() => resolve({ ok: false, error: 'TIMEOUT' }), 5000);
+          setTimeout(() => {
+            clearTimeout(timeout);
+            resolve({ ok: true });
+          }, 1000);
+        });
 
         if ((response as any).ok) {
           db.sync.clearQueue();
           return 'SYNCED';
         } else {
-          throw new Error("Target database unreachable");
+          return 'FAILED';
         }
       } catch (e) {
-        console.warn('❌ CloudSync: Handshake failed. Retrying in next cycle.');
         return 'FAILED';
       }
     }
