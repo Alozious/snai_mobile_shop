@@ -190,7 +190,7 @@ const POS = () => {
   return (
     <div className="flex flex-col lg:flex-row gap-6 h-full max-h-[calc(100vh-140px)]">
       {/* PRODUCT PICKER */}
-      <div className="flex-1 bg-white rounded-[2rem] shadow-sm border border-slate-200/60 flex flex-col overflow-hidden">
+      <div className="flex-1 bg-white rounded-[2.5rem] shadow-sm border border-slate-200/60 flex flex-col overflow-hidden">
         <div className="p-6 border-b border-slate-100 flex items-center gap-4">
           <div className="relative flex-1">
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={20} />
@@ -233,10 +233,10 @@ const POS = () => {
         </div>
       </div>
 
-      {/* CART & CHECKOUT - LIGHT MODE REFINEMENT */}
-      <div className="w-full lg:w-96 bg-white rounded-[2.5rem] shadow-2xl flex flex-col overflow-hidden border border-slate-200/50 relative">
+      {/* CART & CHECKOUT - REFINED LIGHT MODE */}
+      <div className="w-full lg:w-96 bg-white rounded-[2.5rem] shadow-[0_20px_50px_rgba(0,0,0,0.1)] flex flex-col overflow-hidden border border-slate-200/50 relative">
         {/* Header */}
-        <div className="p-6 border-b border-slate-100 flex items-center justify-between bg-slate-50/40">
+        <div className="p-6 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
           <div className="flex items-center gap-3">
             <div className="w-12 h-12 bg-brand-primary rounded-2xl flex items-center justify-center text-black shadow-lg shadow-brand-primary/20">
               <ShoppingBag size={22} strokeWidth={2.5} />
@@ -260,12 +260,12 @@ const POS = () => {
               </div>
               <p className="text-slate-300 text-xs font-black uppercase tracking-[0.3em]">Your cart is empty</p>
               <p className="text-slate-400 text-[10px] font-bold mt-2 max-w-[180px] leading-relaxed">
-                Add products from the menu to start processing a transaction.
+                Add products from the inventory to start processing a sale.
               </p>
             </div>
           ) : (
             cart.map(item => (
-              <div key={item.productId} className="flex flex-col gap-3 bg-white border border-slate-100 p-4 rounded-3xl shadow-sm hover:shadow-md transition-shadow">
+              <div key={item.productId} className="flex flex-col gap-3 bg-white border border-slate-100 p-4 rounded-[1.5rem] shadow-sm hover:shadow-md transition-shadow">
                 <div className="flex justify-between items-start gap-3">
                   <div className="min-w-0 flex-1">
                     <div className="text-slate-800 text-xs font-black uppercase tracking-tight leading-tight truncate">
@@ -339,7 +339,7 @@ const POS = () => {
               <button 
                 key={m.id}
                 onClick={() => setPaymentMethod(m.id as any)}
-                className={`flex items-center gap-2 px-4 py-3.5 rounded-2xl text-[10px] font-black uppercase tracking-wider transition-all border ${paymentMethod === m.id ? 'bg-brand-primary text-black border-brand-primary shadow-lg shadow-brand-primary/10' : 'bg-white text-slate-400 border-slate-200 hover:bg-slate-50 hover:border-slate-300'}`}
+                className={`flex items-center gap-2 px-4 py-3.5 rounded-2xl text-[10px] font-black uppercase tracking-wider transition-all border ${paymentMethod === m.id ? 'bg-brand-primary text-black border-brand-primary shadow-lg shadow-brand-primary/20' : 'bg-white text-slate-400 border-slate-200 hover:bg-slate-50 hover:border-slate-300'}`}
               >
                 <m.icon size={14} strokeWidth={3} />
                 {m.label}
