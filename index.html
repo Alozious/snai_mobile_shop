@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SNA! Mobile • Management System</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              primary: '#f2a31b',
+              primaryDark: '#d48b12',
+              navy: '#0f1224',
+              navyLight: '#1a1e3a',
+              textMuted: '#9aa0ff',
+              sidebarText: '#cfd3ff'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #f4f6fb;
+    }
+
+    /* Prevent print area from rendering on screen / overlapping UI */
+    #print-area {
+      display: none;
+    }
+
+    /* Print Specific Styles */
+    @media print {
+      body * {
+        visibility: hidden;
+      }
+      .no-print {
+        display: none !important;
+      }
+      #print-area {
+        display: block !important;
+        visibility: visible !important;
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+      }
+      #print-area * {
+        visibility: visible !important;
+      }
+
+      /* Thermal Receipt Specifics (80mm) */
+      .thermal-receipt {
+        width: 80mm;
+        padding: 5mm;
+        font-family: 'Courier New', Courier, monospace;
+        color: #000;
+        font-size: 12px;
+        line-height: 1.2;
+      }
+      .thermal-receipt hr {
+        border: none;
+        border-top: 1px dashed #000;
+        margin: 5px 0;
+      }
+      .thermal-receipt .center {
+        text-align: center;
+      }
+      .thermal-receipt .bold {
+        font-weight: bold;
+      }
+      .thermal-receipt .header {
+        font-size: 16px;
+        margin-bottom: 2mm;
+      }
+      .thermal-receipt .footer {
+        font-size: 10px;
+        margin-top: 5mm;
+      }
+      .thermal-receipt table {
+        width: 100%;
+      }
+      .thermal-receipt th {
+        text-align: left;
+        border-bottom: 1px solid #000;
+      }
+    }
+    
+    /* Scrollbar Styling */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+    ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+    .scrollbar-hide::-webkit-scrollbar { display: none; }
+    .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+  </style>
+<script type="importmap">
+{
+  "imports": {
+    "react": "https://esm.sh/react@19.0.0",
+    "react-dom": "https://esm.sh/react-dom@19.0.0",
+    "react-dom/client": "https://esm.sh/react-dom@19.0.0/client",
+    "react-router-dom": "https://esm.sh/react-router-dom@7.1.3?deps=react@19.0.0,react-dom@19.0.0",
+    "recharts": "https://esm.sh/recharts@2.15.0?deps=react@19.0.0,react-dom@19.0.0",
+    "lucide-react": "https://esm.sh/lucide-react@0.474.0?deps=react@19.0.0,react-dom@19.0.0",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
+    "react/": "https://esm.sh/react@^19.2.3/"
+  }
+}
+</script>
+</head>
+<body>
+  <div id="root"></div>
+  <div id="print-area"></div>
+</body>
+</html>
